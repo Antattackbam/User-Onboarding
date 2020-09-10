@@ -143,11 +143,12 @@ const handleChange = e =>{
                 {errorState.password.length > 0 ? <p className="error">{errorState.password}</p> : null}
             </label>
             <label>
-                <p>Do you accept terms?</p>
+                <p>Friends?</p>
                 <input 
                 id='checkboxInput'
                 name='terms' 
                 type='checkbox'
+                default='checked'
                 value={formState.terms}
                 onChange={handleChange} />
             </label>

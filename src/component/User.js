@@ -18,6 +18,7 @@ const Users = props => {
                         <Loser>
                         <p>Name: {user.name}</p>
                         <p>Email: {user.email}</p>
+                        <p>{user.terms.value === 'true' ? 'I will' : 'I wont'}</p>
                         </Loser>
                     </div> 
                 )
