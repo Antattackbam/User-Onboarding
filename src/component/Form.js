@@ -19,7 +19,7 @@ const formSchema = yup.object().shape({
         .required('Please enter a password'),
     terms: yup
         .boolean()
-        .oneOf([true], 'Please agree to terms of use')
+        .oneOf([false], 'Please agree to terms of use')
         .required('You must accept Terms of Service')
 })
 
@@ -36,6 +36,8 @@ const UserCard = styled.div`
     display: flex;
     margin: 0 auto;
     justify-content: center;
+    flex-direction: column;
+    margin-left: 500px;
     padding-top: 100px;
     width: 50%;
 `;
@@ -56,7 +58,7 @@ const [buttonDisabled, setButtonDisabled] = useState(true)
 const [errorState, setErrorState] = useState({...initialFormData, terms: ""})
 
 
-const validate = (e) => {
+const validater = (e) => {
     yup.reach(formSchema, e.target.name)
        .validate(e.target.value)
        .then(valid=>{
@@ -84,11 +86,14 @@ const handleSubmit = e => {
     })
 }
 
-const handleChange = e =>{
+const change = e =>{
     e.persist();
-    validate(e)
-    let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
-    setFormState({ ...formState, [e.target.name]: value, id: Date.now()})
+    const newFormData = {
+        ...formState, 
+        [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value
+    }
+    validater(e);
+    setFormState(newFormData);
 }
 
 
@@ -117,7 +122,7 @@ const handleChange = e =>{
                 placeholder='Enter your name' 
                 type='text'
                 value={formState.name}
-                onChange={handleChange} />
+                onChange={change} />
                 
             </label>
             <label>
@@ -128,7 +133,7 @@ const handleChange = e =>{
                 placeholder='Enter your email' 
                 type='text'
                 value={formState.email}
-                onChange={handleChange}
+                onChange={change}
                 />
             </label>
             <label>
@@ -139,20 +144,20 @@ const handleChange = e =>{
                 placeholder='password' 
                 type='password'
                 value={formState.password}
-                onChange={handleChange} />
+                onChange={change} />
                 {errorState.password.length > 0 ? <p className="error">{errorState.password}</p> : null}
             </label>
             <label>
-                <p>Friends?</p>
+                <p>Human?</p>
                 <input 
                 id='checkboxInput'
                 name='terms' 
                 type='checkbox'
                 default='checked'
                 value={formState.terms}
-                onChange={handleChange} />
+                onChange={change} />
             </label>
-            <button>Submit</button>
+            <button disabled={buttonDisabled}>Submit</button>
         </FormBox>
         <UserCard>
             <User users={userList}/>
